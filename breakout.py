@@ -17,7 +17,7 @@ class Game(tk.Frame):
 
 class GameObjectMixin:
 	"""Ball, Paddle and Brick inherit from this Mixin"""
-	def __iniit__(self, canvas, item):
+	def __init__(self, canvas, item):
 		self.canvas = canvas
 		self.item = item
 
@@ -32,7 +32,14 @@ class GameObjectMixin:
 
 
 class Ball(GameObjectMixin):
-	pass
+	"""Create ball and initialize radius; moves towards top right"""
+	def __init__(self, canvas, x, y):
+		self.radius = 10
+		self.direction = [1, -1]
+		self.speed = 10
+		item = canvas.create_oval(x - self.radius, y - self.radius,
+								  x + self.radius, y + self.radius, fill='red')
+		super(Ball, self).__init__(canvas, item)
 
 
 class Paddle(GameObjectMixin):
