@@ -1,21 +1,22 @@
 import tkinter as tk
 
 
+class Game(tk.Frame):
+	"""Class for our basic GUI layout"""
+	def __init__(self, master):
+		super(Game, self).__init__(master)
+		self.lives = 3
+		self.width = 610
+		self.height = 400
+		self.canvas = tk.Canvas(self, bg="#aaaaff",
+								width=self.width,
+								height=self.height)
+		self.canvas.pack()
+		self.pack()
 
-"""
-3 Lives 
 
-Tkinter provides classes that allow display, control and positioning of widgets.
-Tk() is the outer top level widget -> Frame is inside Tk() which can contain other widgets
--> Canvas will display graphics and text
-Tk -> Frame -> Canvas
-
-"""
-lives = 3
-root = tk.Tk()
-frame = tk.Frame(root)
-canvas = tk.Canvas(frame, width=6000, height=400, bg='#aaaaff')
-frame.pack()
-canvas.pack()
-root.title("Hello")
-root.mainloop()
+if __name__ == '__main__':
+	root = tk.Tk()
+	root.title("Breakout")
+	game = Game(root)
+	game.mainloop()
