@@ -1,2 +1,2 @@
-# py-pong
-Game of pong using Tkinter library
+# Brickout
+This repository contains the game of Breakout using the Tkinter library
