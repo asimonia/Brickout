@@ -66,9 +66,6 @@ class Paddle(GameObjectMixin):
 			if self.ball is not None:
 				self.ball.move(offset, 0)
 
-class Paddle(GameObjectMixin):
-	pass
-
 
 class Brick(GameObjectMixin):
 	pass
