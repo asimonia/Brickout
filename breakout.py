@@ -7,7 +7,6 @@ Basic collision and input detection
 Draw game objects without external assets
 """
 import tkinter as tk
-from gameobject import GameObject
 
 class Game(tk.Frame):
 
