@@ -42,8 +42,8 @@ class Game(tk.Frame):
 		self.hud = None
 		self.setup_game()
 		self.canvas.focus_set()			# bring the canvas to the focus to bind input elements
-		self.canvas.bind('<Left>', lambda _: self.move(-10))
-		self.canvas.bind('<Right>', lambda _: self.move(10))
+		self.canvas.bind('<Left>', lambda _: self.paddle.move(-10))
+		self.canvas.bind('<Right>', lambda _: self.paddle.move(10))
 
 	def setup_game(self):
 		self.add_ball()
@@ -54,10 +54,10 @@ class Game(tk.Frame):
 	def add_ball(self):
 		if self.ball is not None:
 			self.ball.delete()
-			paddle_coords = self.paddle.get_position()
-			x = (paddle_coords[0] + paddle_coords[2]) * 0.5
-			self.ball = Ball(self.canvas, x, 310)
-			self.paddle.set_ball(self.ball)
+		paddle_coords = self.paddle.get_position()
+		x = (paddle_coords[0] + paddle_coords[2]) * 0.5
+		self.ball = Ball(self.canvas, x, 310)
+		self.paddle.set_ball(self.ball)
 
 	def add_brick(self, x, y, hits):
 		brick = Brick(self.canvas, x, y, hits)
@@ -76,56 +76,33 @@ class Game(tk.Frame):
 			self.canvas.itemconfig(self.hud, text=text)
 
 	def start_game(self):
-		pass
+		self.canvas.unbind('<space>')
+		self.canvas.delete(self.text)
+		self.paddle.ball = None
+		self.game_loop()
 
-	def update(self):
-		"""
-		Gets the current position and width of the canvas.
-		If the position collides with the left or right border of the canvas,
-		the horizontal component of the direction vector changes its sign.
-		If the position collides with the upper border of the canvas,
-		the vertical component of the direction vector changes its sign.
-		scale the direction vector by the ball's speed
-		self.move(x, y) -> moves the ball
-		"""
-		coords = self.get_position()
-		width = self.canvas.winfo_width()
-		if coords[0] <= 0 or coords[2] >= width:
-			self.direction[0] *= -1
-		if coords[1] <= 0:
-			self.direction[1] *= -1
-		x = self.direction[0] * self.speed
-		y = self.direction[1] * self.speed
-		self.move(x, y)
-
-	def collide(self, game_objects):
-		"""
-		Method handles the outcome of a collision with one or more bricks
-		"""
-		coords = self.get_position()
-		x = (coords[0] + coords[2]) * 0.5
-		if len(game_objects) > 1:
-			self.direction[1] *= -1
-		elif len(game_objects) == 1:
-			game_object = game_objects[0]
-			coords = game_object.get_position()
-			if x > coords[2]:
-				self.direction[0] = 1
-			elif x < coords[0]:
-				self.direction[0] = -1
+	def game_loop(self):
+		self.check_collisions()
+		num_bricks = len(self.canvas.find_withtag('brick'))
+		if num_bricks == 0: 
+			self.ball.speed = None
+			self.draw_text(300, 200, 'You win!')
+		elif self.ball.get_position()[3] >= self.height: 
+			self.ball.speed = None
+			self.lives -= 1
+			if self.lives < 0:
+				self.draw_text(300, 200, 'Game Over')
 			else:
-				self.direction[1] *= -1
+				self.after(1000, self.setup_game)
+		else:
+			self.ball.update()
+			self.after(50, self.game_loop)
 
-		for game_object in game_objects:
-			if isinstance(game_object, Brick):
-				game_object.hit()
-
-
-
-
-
-
-
+	def check_collisions(self):
+		ball_coords = self.ball.get_position()
+		items = self.canvas.find_overlapping(*ball_coords)
+		objects = [self.items[x] for x in items if x in self.items]
+		self.ball.collide(objects)
 
 
 
