@@ -1,4 +1,5 @@
 from .gameobject import GameObject
+from .brick import Brick
 
 class Ball(GameObject):
 
@@ -29,7 +30,7 @@ class Ball(GameObject):
 		Gets the current position and width of the canvas.
 		If the position collides with the left or right border of the canvas,
 		the horizontal component of the direction vector changes its sign.
-		If the position collides with the upper border of the canvas,
+		If the positioxn collides with the upper border of the canvas,
 		the vertical component of the direction vector changes its sign.
 		scale the direction vector by the ball's speed
 		self.move(x, y) -> moves the ball
