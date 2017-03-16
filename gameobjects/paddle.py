@@ -14,9 +14,11 @@ class Paddle(GameObject):
 		super().__init__(canvas, item)
 
 	def set_ball(self, ball):
+		"""Stores a reference to the ball so it can move before game start"""
 		self.ball = ball
 
 	def move(self, offset):
+		"""Horizontal movement of the paddle"""
 		coords = self.get_position()			# gets the coords of the paddle
 		width = self.canvas.winfo_width()		# gets the canvas width
 		# if the min and max x coords plus offset from movement

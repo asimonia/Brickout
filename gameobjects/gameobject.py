@@ -2,6 +2,7 @@ class GameObject:
 
 	"""
 	Base class for all objects.
+	Get the position, move, and delete objects.
 	"""
 
 	def __init__(self, canvas, item):

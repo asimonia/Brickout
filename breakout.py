@@ -28,7 +28,7 @@ class Game(tk.Frame):
 		self.canvas = tk.Canvas(self, bg='#aaaaff', 
 								width=self.width, 
 								height=self.height)
-		self.canvas.pack()
+		self.canvas.pack()		# displays widgets on the parent container
 		self.pack()
 		self.items = {}
 		self.ball = None
@@ -41,7 +41,10 @@ class Game(tk.Frame):
 
 		self.hud = None
 		self.setup_game()
-		self.canvas.focus_set()			# bring the canvas to the focus to bind input elements
+
+		# bring the canvas to the focus to bind input elements
+		# Key input binding, syntax: (event and event handler)
+		self.canvas.focus_set()
 		self.canvas.bind('<Left>', lambda _: self.paddle.move(-10))
 		self.canvas.bind('<Right>', lambda _: self.paddle.move(10))
 
@@ -52,6 +55,7 @@ class Game(tk.Frame):
 		self.canvas.bind('<space>', lambda _: self.start_game())
 
 	def add_ball(self):
+		"""Add ball during initialization"""
 		if self.ball is not None:
 			self.ball.delete()
 		paddle_coords = self.paddle.get_position()
@@ -60,6 +64,7 @@ class Game(tk.Frame):
 		self.paddle.set_ball(self.ball)
 
 	def add_brick(self, x, y, hits):
+		"""Add brick during initialization"""
 		brick = Brick(self.canvas, x, y, hits)
 		self.items[brick.item] = brick
 
